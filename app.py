@@ -41,7 +41,7 @@ def index():
     return response
 
 
-@app.route('/1', methods=('POST'))
+@app.route('/1', methods=('POST',))
 def _1():
     if request.method == 'POST':
         timing = 60 / request.form.get('cpm', 60)
