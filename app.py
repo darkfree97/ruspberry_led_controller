@@ -41,13 +41,15 @@ def index():
     return response
 
 
-@app.route('/1', methods=('GET', 'POST'))
+@app.route('/1', methods=('POST'))
 def _1():
-    timing = 60 / request.form.get('cpm', 60)
-    count = request.form.get('count', 5)
-    for _ in range(count):
-        first_mode(timing)
-    return 'OK'
+    if request.method == 'POST':
+        timing = 60 / request.form.get('cpm', 60)
+        count = request.form.get('count', 5)
+        for _ in range(count):
+            first_mode(timing)
+        return 'OK'
+    return 'FAIL'
 
 
 @app.route('/2', methods=('GET', 'POST'))
