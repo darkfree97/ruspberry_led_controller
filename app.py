@@ -1,9 +1,7 @@
 import time
-import threading
 
 import RPi.GPIO as GPIO
-from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask import Flask, request
 
 from constants import DISPLAING_TYPE
 
@@ -12,8 +10,7 @@ from constants import DISPLAING_TYPE
 # Flask variables
 DISPLAY = DISPLAING_TYPE.CONNECTION
 COMMUTATION_PER_MINUTE = 60
-CONNECTED_DEVICE = None
-RPI_THREAD = None
+INITIALIZED = False
 
 # =============================================================================
 # Raspberry variables
@@ -26,56 +23,67 @@ LED_3 = 18
 # Flask code block
 
 app = Flask(__name__)
-api = Api(app)
 
 
 # -----------------------------------------------------------------------------
 # HTTP controllers
 @app.route('/')
 def index():
-    global RPI_THREAD
-    if not RPI_THREAD:
-        RPI_THREAD = threading.Thread(target=rasp_main)
-        RPI_THREAD.run()
-        return "Server was run"
+    global INITIALIZED
+    if not INITIALIZED:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup((LED_1, LED_2, LED_3), GPIO.OUT)
+        INITIALIZED = True
+        response = 'Successful initialized'
     else:
-        return "Server is already running"
+        response = 'Server is already running'
+    connection_mode()
+    return response
 
 
-# -----------------------------------------------------------------------------
-# API Controllers
-
-class Connect(Resource):
-    def get(self):
-        global CONNECTED_DEVICE, DISPLAY
-        parser = reqparse.RequestParser()
-        parser.add_argument('device', required=True)
-        args = parser.parse_args()
-        if CONNECTED_DEVICE is None:
-            CONNECTED_DEVICE = args['device']
-            DISPLAY = DISPLAING_TYPE.NORMAL
-            return {'status': 'CONNECTED'}
-        else:
-            return {'status': 'FAIL'}
+@app.route('/1')
+def _1():
+    timing = 60 / request.form.get('cpm', 60)
+    count = request.form.get('count', 5)
+    for _ in range(count):
+        first_mode(timing)
+    return True
 
 
-class Disconnect(Resource):
-    def post(self):
-        global CONNECTED_DEVICE, COMMUTATION_PER_MINUTE, DISPLAY
-        parser = reqparse.RequestParser()
-        parser.add_argument('device', required=True)
-        args = parser.parse_args()
-        if args.get('device'):
-            CONNECTED_DEVICE = None
-            DISPLAY = DISPLAING_TYPE.CONNECTION
-            COMMUTATION_PER_MINUTE = 60
+@app.route('/2')
+def _1():
+    timing = 60 / request.form.get('cpm', 60)
+    count = request.form.get('count', 5)
+    for _ in range(count):
+        second_mode(timing)
+    return True
 
 
-# -----------------------------------------------------------------------------
-# Routing
+@app.route('/3')
+def _1():
+    timing = 60 / request.form.get('cpm', 60)
+    count = request.form.get('count', 5)
+    for _ in range(count):
+        third_mode(timing)
+    return True
 
-api.add_resource(Connect, '/connect')
-api.add_resource(Disconnect, '/disconnect')
+
+@app.route('/normal')
+def _1():
+    timing = 60 / request.form.get('cpm', 60)
+    count = request.form.get('count', 5)
+    for _ in range(count):
+        normal_mode(timing)
+    return True
+
+
+@app.route('/reverse')
+def _1():
+    timing = 60 / request.form.get('cpm', 60)
+    count = request.form.get('count', 5)
+    for _ in range(count):
+        reverse_mode(timing)
+    return True
 
 
 # =============================================================================
@@ -137,26 +145,6 @@ def reverse_mode(timing):
     time.sleep(timing)
     GPIO.output(LED_2, False)
     GPIO.output(LED_1, True)
-
-
-def rasp_main():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup((LED_1, LED_2, LED_3), GPIO.OUT)
-    while True:
-        global COMMUTATION_PER_MINUTE, DISPLAY
-        timing = 60.0 / COMMUTATION_PER_MINUTE
-        if DISPLAY == DISPLAING_TYPE.CONNECTION:
-            connection_mode()
-        elif DISPLAY == DISPLAING_TYPE.LED_1:
-            first_mode(timing)
-        elif DISPLAY == DISPLAING_TYPE.LED_2:
-            second_mode(timing)
-        elif DISPLAY == DISPLAING_TYPE.LED_3:
-            third_mode(timing)
-        elif DISPLAY == DISPLAING_TYPE.NORMAL:
-            normal_mode(timing)
-        elif DISPLAY == DISPLAING_TYPE.REVERSE:
-            reverse_mode(timing)
 
 
 # =============================================================================
