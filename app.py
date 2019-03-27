@@ -99,7 +99,6 @@ def connection_mode():
         GPIO.output(LED_1, False)
         GPIO.output(LED_2, False)
         GPIO.output(LED_3, False)
-    time.sleep(2)
 
 
 def first_mode(timing):
