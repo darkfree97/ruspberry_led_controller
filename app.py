@@ -13,6 +13,7 @@ from constants import DISPLAING_TYPE
 DISPLAY = DISPLAING_TYPE.CONNECTION
 COMMUTATION_PER_MINUTE = 60
 CONNECTED_DEVICE = None
+RPI_THREAD = None
 
 # =============================================================================
 # Raspberry variables
@@ -26,6 +27,19 @@ LED_3 = 18
 
 app = Flask(__name__)
 api = Api(app)
+
+
+# -----------------------------------------------------------------------------
+# HTTP controllers
+@app.route('/')
+def index():
+    global RPI_THREAD
+    if not RPI_THREAD:
+        RPI_THREAD = threading.Thread(target=rasp_main)
+        RPI_THREAD.run()
+        return "Server was run"
+    else:
+        return "Server is already running"
 
 
 # -----------------------------------------------------------------------------
@@ -149,10 +163,4 @@ def rasp_main():
 # Main code block
 
 if __name__ == '__main__':
-    threads = [
-        threading.Thread(target=rasp_main()),
-        threading.Thread(target=app.run,
-                         kwargs={'host': '0.0.0.0', 'port': 5000}),
-    ]
-    for thread in threads:
-        thread.start()
+    app.run()
