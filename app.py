@@ -47,7 +47,7 @@ def _1():
     count = request.form.get('count', 5)
     for _ in range(count):
         first_mode(timing)
-    return True
+    return 'OK'
 
 
 @app.route('/2')
@@ -56,7 +56,7 @@ def _2():
     count = request.form.get('count', 5)
     for _ in range(count):
         second_mode(timing)
-    return True
+    return 'OK'
 
 
 @app.route('/3')
@@ -65,7 +65,7 @@ def _3():
     count = request.form.get('count', 5)
     for _ in range(count):
         third_mode(timing)
-    return True
+    return 'OK'
 
 
 @app.route('/normal')
@@ -74,7 +74,7 @@ def normal():
     count = request.form.get('count', 5)
     for _ in range(count):
         normal_mode(timing)
-    return True
+    return 'OK'
 
 
 @app.route('/reverse')
@@ -83,7 +83,7 @@ def reverse():
     count = request.form.get('count', 5)
     for _ in range(count):
         reverse_mode(timing)
-    return True
+    return 'OK'
 
 
 # =============================================================================
