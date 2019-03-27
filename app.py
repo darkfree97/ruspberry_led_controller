@@ -123,8 +123,6 @@ def third_mode(timing):
 
 
 def normal_mode(timing):
-    time.sleep(timing)
-    GPIO.output(LED_3, False)
     GPIO.output(LED_1, True)
     time.sleep(timing)
     GPIO.output(LED_1, False)
@@ -132,11 +130,11 @@ def normal_mode(timing):
     time.sleep(timing)
     GPIO.output(LED_2, False)
     GPIO.output(LED_3, True)
+    time.sleep(timing)
+    GPIO.output(LED_3, False)
 
 
 def reverse_mode(timing):
-    time.sleep(timing)
-    GPIO.output(LED_1, False)
     GPIO.output(LED_3, True)
     time.sleep(timing)
     GPIO.output(LED_3, False)
@@ -144,6 +142,8 @@ def reverse_mode(timing):
     time.sleep(timing)
     GPIO.output(LED_2, False)
     GPIO.output(LED_1, True)
+    time.sleep(timing)
+    GPIO.output(LED_1, False)
 
 
 # =============================================================================
