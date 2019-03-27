@@ -51,7 +51,7 @@ def _1():
 
 
 @app.route('/2')
-def _1():
+def _2():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
     for _ in range(count):
@@ -60,7 +60,7 @@ def _1():
 
 
 @app.route('/3')
-def _1():
+def _3():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
     for _ in range(count):
@@ -69,7 +69,7 @@ def _1():
 
 
 @app.route('/normal')
-def _1():
+def normal():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
     for _ in range(count):
@@ -78,7 +78,7 @@ def _1():
 
 
 @app.route('/reverse')
-def _1():
+def reverse():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
     for _ in range(count):
