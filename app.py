@@ -12,6 +12,7 @@ from constants import DISPLAING_TYPE
 # Flask variables
 DISPLAY = DISPLAING_TYPE.CONNECTION
 COMMUTATION_PER_MINUTE = 60
+CONNECTED_DEVICE = None
 
 # =============================================================================
 # Raspberry variables
@@ -149,8 +150,9 @@ def rasp_main():
 
 if __name__ == '__main__':
     threads = [
-        threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 5000}),
         threading.Thread(target=rasp_main()),
+        threading.Thread(target=app.run,
+                         kwargs={'host': '0.0.0.0', 'port': 5000}),
     ]
     for thread in threads:
         thread.start()
