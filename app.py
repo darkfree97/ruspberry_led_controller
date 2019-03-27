@@ -41,7 +41,7 @@ def index():
     return response
 
 
-@app.route('/1')
+@app.route('/1', methods=('GET', 'POST'))
 def _1():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
@@ -50,7 +50,7 @@ def _1():
     return 'OK'
 
 
-@app.route('/2')
+@app.route('/2', methods=('GET', 'POST'))
 def _2():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
@@ -59,7 +59,7 @@ def _2():
     return 'OK'
 
 
-@app.route('/3')
+@app.route('/3', methods=('GET', 'POST'))
 def _3():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
@@ -68,7 +68,7 @@ def _3():
     return 'OK'
 
 
-@app.route('/normal')
+@app.route('/normal', methods=('GET', 'POST'))
 def normal():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
@@ -77,7 +77,7 @@ def normal():
     return 'OK'
 
 
-@app.route('/reverse')
+@app.route('/reverse', methods=('GET', 'POST'))
 def reverse():
     timing = 60 / request.form.get('cpm', 60)
     count = request.form.get('count', 5)
@@ -150,4 +150,4 @@ def reverse_mode(timing):
 # Main code block
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=)
